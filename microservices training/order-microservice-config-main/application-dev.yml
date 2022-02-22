@@ -1,0 +1,76 @@
+server:
+  port: 8222
+
+spring:
+  datasource:
+    username: sa
+    password: welcome
+    url: jdbc:h2:mem:orders_db
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+debug: false
+info:
+  application:
+    name: Ekart-app
+    description: An ecommerce-store
+    company:
+      name: Classpath Consulting
+      location: Bangalore
+
+
+management:
+  endpoint:
+    info:
+      enabled: true
+    health:
+      show-details: always
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: /actuator
+  info:
+    env:
+      enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+    circuitbreakers:
+      enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventoryservice:
+        register-health-indicator: true
+        ring-buffer-size-in-closed-state: 5
+        wait-duration-in-open-state: 30s
+        ring-buffer-size-in-half-open-state: 3
+        failure-rate-threshold: 50
+        record-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.ResourceAccessException
+  retry:
+    instances:
+      retryService:
+        max-retry-attempts: 4
+        wait-duration: 2000
+        retry-exceptions:
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+          - org.springframework.web.client.ResourceAccessException
+          - java.lang.IllegalStateException
+
+

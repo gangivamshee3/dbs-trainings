@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: inventory-microservice-rs
+  labels:
+    app: inventory-microservice
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: inventory-microservice
+  template:
+    metadata:
+      name: inventory-microservice
+      labels:
+        app: inventory-microservice
+    spec:
+      containers:
+        - name: inventory-microservice
+          image: classpathio/inventory-microservice:latest
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory-service
+spec:
+  selector:
+    app: inventory-microservice
+  ports:
+    - port: 80
+      targetPort: 9222
+      protocol: TCP
+  type: ClusterIP

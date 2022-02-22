@@ -1,0 +1,18 @@
+server:
+  port: 8555
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          okta:
+            client-id: 0oa3sk39xs8NL5yI55d7
+            client-secret: 3EWA0NMmd7z3f88tJEef_zyILnhppnzkctZ1K1eo
+        provider:
+          okta:
+            authorization-uri: https://dev-7858070.okta.com/oauth2/default/v1/authorize
+            token-uri: https://dev-7858070.okta.com/oauth2/default/v1/token
+            user-info-uri: https://dev-7858070.okta.com/oauth2/default/v1/userinfo
+            jwk-set-uri: https://dev-7858070.okta.com/oauth2/default/v1/keys
+debug: true
